@@ -34,7 +34,6 @@ int main(void){
 
 
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, render_flags);
 
     if(!renderer){
@@ -44,7 +43,7 @@ int main(void){
         return 1;
     }
 
-    SDL_Surface* surface = IMG_Load("resources/hello.png");
+    SDL_Surface* surface = IMG_Load("resources/DK.png");
 
     if(!surface){
         printf("Failed to create surface: %s\n", SDL_GetError());
