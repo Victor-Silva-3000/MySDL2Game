@@ -70,6 +70,7 @@ int main(void){
 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     dest.x = (WINDOW_WIDTH - dest.w) / 2;
 
     float y_pos = WINDOW_HEIGHT;
