@@ -8,7 +8,7 @@
 
 // Pixels/s
 #define SCROLL_SPEED (300)
-int main(void){
+int main(int argc, char *argv[]){
 
     // Initialize video and timer subsystems
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0) // If SDL_Init returns 1 show error message
@@ -20,7 +20,7 @@ int main(void){
 
     // Create game window.
     SDL_Window* window = SDL_CreateWindow(
-                                        "MySDL2Game",
+                                        "DK Fucking Flies",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
                                         640, 480, 0
