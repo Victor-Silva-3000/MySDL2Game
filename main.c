@@ -3,7 +3,11 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+#define WINDOW_WIDTH (640)
+#define WINDOW_HEIGHT (480)
 
+// Pixels/s
+#define SCROLL_SPEED (300)
 int main(void){
 
     // Initialize video and timer subsystems
@@ -62,15 +66,30 @@ int main(void){
         return 1;
     }
     
-    SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+    SDL_Rect dest;
 
-    printf("SDL Initialized successfully!\n");
+    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
-    // Wait for 5000ms (5 seconds)
-    SDL_Delay(5000);
+    dest.x = (WINDOW_WIDTH - dest.w) / 2;
+
+    float y_pos = WINDOW_HEIGHT;
+
+    while(dest.y >= -dest.h){
+        SDL_RenderClear(renderer);
+
+        dest.y = (int) y_pos;
+
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
+        SDL_RenderPresent(renderer);
+
+        y_pos -= (float) SCROLL_SPEED / 60;
+
+        SDL_Delay(1000/60);
+
+    }
+
+
 
     // Remove window
     SDL_DestroyTexture(texture);
