@@ -7,7 +7,8 @@
 #define WINDOW_HEIGHT (480)
 
 // Pixels/s
-#define SCROLL_SPEED (300)
+
+#define SPEED (300)
 int main(int argc, char *argv[]){
 
     // Initialize video and timer subsystems
@@ -20,10 +21,10 @@ int main(int argc, char *argv[]){
 
     // Create game window.
     SDL_Window* window = SDL_CreateWindow(
-                                        "DK Fucking Flies",
+                                        "DK Fucking Zooms",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
-                                        640, 480, 0
+                                        WINDOW_WIDTH, WINDOW_HEIGHT, 0
                                         );
 
     if(!window){
@@ -70,20 +71,68 @@ int main(int argc, char *argv[]){
 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
+    dest.w /= 4;
+    dest.h /= 4;
+
+    float x_pos = (WINDOW_WIDTH - dest.w) / 2;
+    float y_pos = (WINDOW_HEIGHT - dest.h) / 2;
+    float x_vel = SPEED;
+    float y_vel = SPEED;
+
+    int close_requested = 0;
+    
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    /* 
     dest.x = (WINDOW_WIDTH - dest.w) / 2;
 
-    float y_pos = WINDOW_HEIGHT;
+    float y_pos = WINDOW_HEIGHT; */
 
-    while(dest.y >= -dest.h){
+    while(!close_requested){
+        
+        SDL_Event event;
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_QUIT){
+                close_requested = 1;
+            }
+        }
+
+        if(x_pos <= 0){
+            x_pos = 0;
+            x_vel = -x_vel;
+        }
+
+        if(y_pos <= 0){
+            y_pos = 0;
+            y_vel = -y_vel;
+        }
+
+        if(x_pos >=  WINDOW_WIDTH - dest.w){
+            x_pos = WINDOW_WIDTH - dest.w;
+            x_vel = -x_vel;
+        }
+
+        if(y_pos >= WINDOW_HEIGHT - dest.h){
+            y_pos = WINDOW_HEIGHT - dest.h;
+            y_vel = -y_vel;
+        } 
+
+        x_pos += x_vel / 60;
+        y_pos += y_vel / 60;
+
         SDL_RenderClear(renderer);
 
         dest.y = (int) y_pos;
+        dest.x = (int) x_pos;
+
+        dest.w++;
+        dest.h++;
+
+
+        printf("%d, %d\n", dest.w, dest.h);
 
         SDL_RenderCopy(renderer, texture, NULL, &dest);
         SDL_RenderPresent(renderer);
 
-        y_pos -= (float) SCROLL_SPEED / 60;
 
         SDL_Delay(1000/60);
 
